@@ -3,10 +3,18 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 var handlebars = require('express3-handlebars');
+var graph = require('fbgraph');
 var app = express();
 
 //route files to load
 var index = require('./routes/index');
+
+var conf = {
+    client_id:      '227760087431276'
+  , client_secret:  'b61485bf170bea73c7d5512dda85a5cb'
+  , scope:          'email, user_about_me, user_birthday, user_location, publish_stream'
+  , redirect_uri:   'http://localhost:3000/auth/facebook'
+};
 
 //database setup - uncomment to set up your database
 //var mongoose = require('mongoose');
@@ -21,6 +29,41 @@ app.use(express.bodyParser());
 
 //routes
 app.get('/', index.view);
+app.get('/gallery', index.gallery);
+
+app.get('/auth/facebook', function(req, res) {
+
+  // we don't have a code yet
+  // so we'll redirect to the oauth dialog
+  if (!req.query.code) {
+    var authUrl = graph.getOauthUrl({
+        "client_id":     conf.client_id
+      , "redirect_uri":  conf.redirect_uri
+    });
+
+    if (!req.query.error) { //checks whether a user denied the app facebook login/permissions
+      res.redirect(authUrl);
+      console.log("logged in");
+    } else {  //req.query.error == 'access_denied'
+      res.send('access denied');
+    }
+    return;
+  }
+
+  // code is set
+  // we'll send that and get the access token
+  graph.authorize({
+      "client_id":      conf.client_id
+    , "redirect_uri":   conf.redirect_uri
+    , "client_secret":  conf.client_secret
+    , "code":           req.query.code
+  }, function (err, facebookRes) {
+    res.redirect('/gallery');
+  });
+
+});
+
+
 //set environment ports and start application
 app.set('port', process.env.PORT || 3000);
 http.createServer(app).listen(app.get('port'), function(){
