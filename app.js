@@ -4,6 +4,7 @@ var http = require('http');
 var path = require('path');
 var handlebars = require('express3-handlebars');
 var graph = require('fbgraph');
+var Twit = require('twit')
 var app = express();
 
 //route files to load
@@ -15,6 +16,13 @@ var conf = {
   , scope:          'email, user_about_me, user_birthday, user_location, publish_stream'
   , redirect_uri:   'http://localhost:3000/auth/facebook'
 };
+
+var T = new Twit({
+    consumer_key:         'bkAYRXG9np9i1xbbzIdnse73n'
+  , consumer_secret:      'cl3UNgtnbi6BTgaLZe6tm6poEmmNP4hWJJlLWa2apazfeluNkt'
+  , access_token:         '332774481-eKJNCnLgtwGz548ontQyLKzeb86tdSaijsus7Dw0'
+  , access_token_secret:  'FsWw6f2bhrM1KUUGQ26og0VrmChEmbooRCK6VMH4DFae0'
+})
 
 //database setup - uncomment to set up your database
 //var mongoose = require('mongoose');
@@ -63,6 +71,7 @@ app.get('/auth/facebook', function(req, res) {
 });
 
 exports.graph = graph;
+exports.T = T;
 
 
 //set environment ports and start application
