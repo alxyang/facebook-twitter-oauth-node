@@ -60,12 +60,9 @@ app.get('/auth/facebook', function(req, res) {
   }, function (err, facebookRes) {
     res.redirect('/gallery');
   });
-
-  //test api call...how to move this elsewhere?
-  graph.get("zuck", function(err, res) {
-    console.log(res); // { id: '4', name: 'Mark Zuckerberg'... }
-  });
 });
+
+exports.graph = graph;
 
 
 //set environment ports and start application
