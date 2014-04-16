@@ -5,10 +5,15 @@ exports.view = function(req, res) {
 	res.render('index');
 
   //twitter test API call
-  app.T.get('search/tweets', { q: 'banana since:2011-11-11', count: 5 }, function(err, reply) {
-    console.log(reply);
-  })
-}
+  // app.T.get('search/tweets', { q: 'banana since:2011-11-11', count: 5 }, function(err, reply) {
+  //   console.log(reply);
+  // })
+
+  //test2
+  // app.T.post('statuses/retweet/:id', { id: '343360866131001345' }, function (err, reply) {
+  //   console.log(reply);
+  // })
+ }
 
 exports.gallery = function(req, res) {
     res.render('gallery');
