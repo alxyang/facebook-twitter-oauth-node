@@ -7,13 +7,18 @@ var graph = require('fbgraph');
 var passport = require('passport');
 var util = require('util');
 var TwitterStrategy = require('passport-twitter').Strategy;
+var Twit = require('twit');
 var app = express();
 
 //route files to load
 var index = require('./routes/index');
 
-var TWITTER_CONSUMER_KEY = 'bkAYRXG9np9i1xbbzIdnse73n';
-var TWITTER_CONSUMER_SECRET = 'cl3UNgtnbi6BTgaLZe6tm6poEmmNP4hWJJlLWa2apazfeluNkt';
+var CONSUMER_KEY = 'bkAYRXG9np9i1xbbzIdnse73n';
+var CONSUMER_SECRET = 'cl3UNgtnbi6BTgaLZe6tm6poEmmNP4hWJJlLWa2apazfeluNkt';
+var ACCESS_TOKEN = "";
+var ACCESS_TOKEN_SECRET = "";
+
+
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -35,14 +40,16 @@ passport.deserializeUser(function(obj, done) {
 //   credentials (in this case, a token, tokenSecret, and Twitter profile), and
 //   invoke a callback with a user object.
 passport.use(new TwitterStrategy({
-    consumerKey: TWITTER_CONSUMER_KEY,
-    consumerSecret: TWITTER_CONSUMER_SECRET,
+    consumerKey: CONSUMER_KEY,
+    consumerSecret: CONSUMER_SECRET,
     callbackURL: 'http://localhost:3000/auth/twitter/callback'
   },
   function(token, tokenSecret, profile, done) {
-    // asynchronous verification, for effect...
+    // // asynchronous verification, for effect...
     process.nextTick(function () {
-      
+      console.log(token);
+      ACCESS_TOKEN = token;
+      ACCESS_TOKEN_SECRET = tokenSecret;
       // To keep the example simple, the user's Twitter profile is returned to
       // represent the logged-in user.  In a typical application, you would want
       // to associate the Twitter account with a user record in your database,
@@ -70,10 +77,10 @@ app.set('view engine', 'handlebars');
 
 app.set('views', __dirname + '/views');
 app.use(express.static(path.join(__dirname, 'public')));
-  app.use(express.logger());
-  app.use(express.cookieParser());
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
+app.use(express.logger());
+app.use(express.cookieParser());
+app.use(express.bodyParser());
+app.use(express.methodOverride());
 app.use(express.session({ secret: 'keyboard cat' }));
 // Initialize Passport!  Also use passport.session() middleware, to support
 // persistent login sessions (recommended).
@@ -133,12 +140,21 @@ app.get('/auth/twitter',
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
 app.get('/auth/twitter/callback', 
-  passport.authenticate('twitter', { failureRedirect: '/login' }),
+  passport.authenticate('twitter', { failureRedirect: '/' }),
   function(req, res) {
+    var T = new Twit({
+    consumer_key:         CONSUMER_KEY
+  , consumer_secret:      CONSUMER_SECRET
+  , access_token:         ACCESS_TOKEN
+  , access_token_secret:  ACCESS_TOKEN_SECRET
+  })
+    exports.T = T;
     res.redirect('/gallery');
   });
 
+
 exports.graph = graph;
+
 
 
 //set environment ports and start application
