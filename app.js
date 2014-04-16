@@ -13,12 +13,18 @@ var app = express();
 //route files to load
 var index = require('./routes/index');
 
+//facebook and twitter api keys...place in .env later
 var CONSUMER_KEY = 'bkAYRXG9np9i1xbbzIdnse73n';
 var CONSUMER_SECRET = 'cl3UNgtnbi6BTgaLZe6tm6poEmmNP4hWJJlLWa2apazfeluNkt';
 var ACCESS_TOKEN = "";
 var ACCESS_TOKEN_SECRET = "";
 
-
+var conf = {
+    client_id:      '227760087431276'
+  , client_secret:  'b61485bf170bea73c7d5512dda85a5cb'
+  , scope:          'email, user_about_me, user_birthday, user_location, publish_stream'
+  , redirect_uri:   'http://localhost:3000/auth/facebook'
+};
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -59,13 +65,6 @@ passport.use(new TwitterStrategy({
   }
 ));
 
-var conf = {
-    client_id:      '227760087431276'
-  , client_secret:  'b61485bf170bea73c7d5512dda85a5cb'
-  , scope:          'email, user_about_me, user_birthday, user_location, publish_stream'
-  , redirect_uri:   'http://localhost:3000/auth/facebook'
-};
-
 
 //database setup - uncomment to set up your database
 //var mongoose = require('mongoose');
@@ -89,8 +88,8 @@ app.use(passport.session());
 app.use(app.router);
 //routes
 app.get('/', index.view);
-app.get('/gallery', index.gallery);
-
+app.get('/fbpage', index.fbpage);
+app.get('/twitpage', index.twitpage);
 app.get('/auth/facebook', function(req, res) {
 
   // we don't have a code yet
@@ -118,7 +117,7 @@ app.get('/auth/facebook', function(req, res) {
     , "client_secret":  conf.client_secret
     , "code":           req.query.code
   }, function (err, facebookRes) {
-    res.redirect('/gallery');
+    res.redirect('/fbpage');
   });
 });
 
@@ -149,7 +148,7 @@ app.get('/auth/twitter/callback',
   , access_token_secret:  ACCESS_TOKEN_SECRET
   })
     exports.T = T;
-    res.redirect('/gallery');
+    res.redirect('/twitpage');
   });
 
 
