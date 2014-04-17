@@ -27,7 +27,7 @@ var conf = {
     client_id:      process.env.facebook_client_id
   , client_secret:  process.env.facebook_client_secret
   , scope:          'email, user_about_me, user_birthday, user_location, publish_stream, read_stream, user_likes, user_photos, user_relationships, user_status, user_work_history'
-  , redirect_uri:   'http://localhost:3000/auth/facebook'
+  , redirect_uri:   'http://fbtwitnode.herokuapp.com/auth/facebook'
 };
 
 // Passport session setup.
@@ -52,7 +52,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new TwitterStrategy({
     consumerKey: CONSUMER_KEY,
     consumerSecret: CONSUMER_SECRET,
-    callbackURL: 'http://localhost:3000/auth/twitter/callback'
+    callbackURL: 'http://fbtwitnode.herokuapp.com/auth/twitter/callback'
   },
   function(token, tokenSecret, profile, done) {
     // // asynchronous verification, for effect...
