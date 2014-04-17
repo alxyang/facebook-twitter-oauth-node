@@ -28,7 +28,7 @@ var conf = {
     client_id:      process.env.facebook_client_id
   , client_secret:  process.env.facebook_client_secret
   , scope:          'email, user_about_me, user_birthday, user_location, publish_stream, read_stream, user_likes, user_photos, user_relationships, user_status, user_work_history'
-  , redirect_uri:   process.env.devurlfacebook
+  , redirect_uri:   process.env.produrlfacebook
 };
 
 var FACEBOOK_APP_ID = process.env.facebook_client_id;
@@ -57,7 +57,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: process.env.devurlfacebook
+    callbackURL: process.env.produrlfacebook
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
