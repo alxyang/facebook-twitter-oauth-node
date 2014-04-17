@@ -22,7 +22,7 @@ var ACCESS_TOKEN_SECRET = "";
 var conf = {
     client_id:      '227760087431276'
   , client_secret:  'b61485bf170bea73c7d5512dda85a5cb'
-  , scope:          'email, user_about_me, user_birthday, user_location, publish_stream'
+  , scope:          'email, user_about_me, user_birthday, user_location, publish_stream, read_stream, user_likes, user_photos, user_relationships, user_status, user_work_history'
   , redirect_uri:   'http://localhost:3000/auth/facebook'
 };
 
