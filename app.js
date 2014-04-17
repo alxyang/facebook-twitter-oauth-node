@@ -160,7 +160,10 @@ app.get('/auth/facebook/callback',
   });
 
 //add for facebook canvas?
-app.post('/', index.fbpage);
+// app.post('/', index.view);
+app.post('/', function( req, res ){
+    res.redirect('/auth/facebook/canvas');
+});
 app.post('/auth/facebook/canvas', 
   passport.authenticate('facebook-canvas', { failureRedirect: '/auth/facebook/canvas/autologin' }),
   function(req, res) {
