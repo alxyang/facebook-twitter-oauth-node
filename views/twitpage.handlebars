@@ -2,11 +2,13 @@
     body {  background-color: #2EB8E6;}
 </style>
         <div class="container-twitter container-fluid">
-            <div id="heading" class = "h1 text-center">{{screen_name}}'s Recent Posts</div>
+            <div id="heading" class = "h2 text-center">{{screen_name}}'s Recent Posts</div>
             {{#each posts}}
-                <div class="tweetframe">
-                    {{text}}<br>
+            <div class ="row">
+                <div class="col-md-offset-4 col-md-4 tweetframe">
+                    {{text}}
                 </div>
+            </div>
             {{/each}}
         </div>
 

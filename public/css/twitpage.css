@@ -7,8 +7,7 @@
 
 
 #heading {
-	margin-left: 30%;
-	margin-right: 30%;
+
 }
 
 .tweetframe {
@@ -16,14 +15,11 @@
 	color: #000;
 	text-align: left;
 
-	margin-left: 30%;
-	margin-right: 30%;
 	padding-left: 10px;
 	padding-right: 10px;
 	padding-top: 10px;
 	padding-bottom: 10px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-
+	margin-top: 5px;
+	margin-bottom: 5px;
 	border-radius: 2px;
 }
