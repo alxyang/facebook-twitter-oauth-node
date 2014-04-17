@@ -27,12 +27,14 @@ exports.fbpage = function(req, res) {
 
 exports.twitpage = function(req, res) {
 
-	var data, screen_name = null;
+	var finalData = null,
+		screen_name = null,
+		posts = null;
 
 	//  get username of current user
     app.T.get('account/verify_credentials', function(err, reply) {
     	screen_name = reply.screen_name;
-    	console.log(screen_name);
+    	complete();
     });
 
     //  get user twitter feed test
@@ -45,16 +47,16 @@ exports.twitpage = function(req, res) {
             testarray.push(textArr);
         });
 
-        data = {'posts': testarray, 'screen_name': screen_name};
-        console.log(data);
-        render();
+        posts = testarray;
+        complete();
     });
 
     // check to make sure that async calls are made before final render
-    function render() {
-    	while(!screen_name == null || data == null) {
+    function complete() {
+    	if(screen_name !== null && posts !== null) {
+    		finalData = {'posts': posts, 'screen_name': screen_name};
+    		res.render('twitpage', finalData);
     	}
-    	res.render('twitpage', data);
     }
 }
 
