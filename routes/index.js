@@ -26,21 +26,35 @@ exports.fbpage = function(req, res) {
 }
 
 exports.twitpage = function(req, res) {
+
+	var data, screen_name = null;
+
+	//  get username of current user
+    app.T.get('account/verify_credentials', function(err, reply) {
+    	screen_name = reply.screen_name;
+    	console.log(screen_name);
+    });
+
     //  get user twitter feed test
     app.T.get('statuses/user_timeline', { count: 20 }, function(err, reply) {
 
         var testarray = [];
         reply.map(function(item){
-            var tempJSON = {};
-            tempJSON.text = item.text;
-            testarray.push(tempJSON);
+            var textArr = {};
+            textArr.text = item.text;
+            testarray.push(textArr);
         });
 
-        // console.log(testarray[0]);
-        // console.log(testarray[1]);
-
-        var data = {posts: testarray};
-        res.render('twitpage', data);
+        data = {'posts': testarray, 'screen_name': screen_name};
+        console.log(data);
+        render();
     });
+
+    // check to make sure that async calls are made before final render
+    function render() {
+    	while(!screen_name == null || data == null) {
+    	}
+    	res.render('twitpage', data);
+    }
 }
 
