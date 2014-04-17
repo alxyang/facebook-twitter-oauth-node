@@ -18,7 +18,7 @@ exports.fbpage = function(req, res) {
 
 exports.twitpage = function(req, res) {
     //  get user twitter feed test
-    app.T.get('statuses/user_timeline', { count: 2 }, function(err, reply) {
+    app.T.get('statuses/user_timeline', { count: 20 }, function(err, reply) {
 
         var testarray = [];
         reply.map(function(item){
@@ -30,7 +30,7 @@ exports.twitpage = function(req, res) {
         // console.log(testarray[0]);
         // console.log(testarray[1]);
 
-        var data = {rdata: "herp", tdata: "derp", posts: testarray};
+        var data = {posts: testarray};
         res.render('twitpage', data);
     })
 }
