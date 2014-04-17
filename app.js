@@ -8,20 +8,24 @@ var passport = require('passport');
 var util = require('util');
 var TwitterStrategy = require('passport-twitter').Strategy;
 var Twit = require('twit');
+//load environment variables
+var dotenv = require('dotenv');
+dotenv.load();
+
 var app = express();
 
 //route files to load
 var index = require('./routes/index');
 
 //facebook and twitter api keys...place in .env later
-var CONSUMER_KEY = 'bkAYRXG9np9i1xbbzIdnse73n';
-var CONSUMER_SECRET = 'cl3UNgtnbi6BTgaLZe6tm6poEmmNP4hWJJlLWa2apazfeluNkt';
+var CONSUMER_KEY = process.env.twitter_consumer_key;
+var CONSUMER_SECRET = process.env.twitter_consumer_secret;
 var ACCESS_TOKEN = "";
 var ACCESS_TOKEN_SECRET = "";
 
 var conf = {
-    client_id:      '227760087431276'
-  , client_secret:  'b61485bf170bea73c7d5512dda85a5cb'
+    client_id:      process.env.facebook_client_id
+  , client_secret:  process.env.facebook_client_secret
   , scope:          'email, user_about_me, user_birthday, user_location, publish_stream, read_stream, user_likes, user_photos, user_relationships, user_status, user_work_history'
   , redirect_uri:   'http://localhost:3000/auth/facebook'
 };
@@ -90,6 +94,8 @@ app.use(app.router);
 app.get('/', index.view);
 app.get('/fbpage', index.fbpage);
 app.get('/twitpage', index.twitpage);
+
+//facebook authorization path
 app.get('/auth/facebook', function(req, res) {
 
   // we don't have a code yet
