@@ -18,22 +18,28 @@ var app = express();
 //route files to load
 var index = require('./routes/index');
 
-//facebook and twitter api keys...place in .env later
+//twitter api keys
 var CONSUMER_KEY = process.env.twitter_consumer_key;
 var CONSUMER_SECRET = process.env.twitter_consumer_secret;
+var CALLBACK_URL_TWITTER = process.env.devurltwitter
 var ACCESS_TOKEN = "";
 var ACCESS_TOKEN_SECRET = "";
 
-var conf = {
-    client_id:      process.env.facebook_client_id
-  , client_secret:  process.env.facebook_client_secret
-  , scope:          'email, user_about_me, user_birthday, user_location, publish_stream, read_stream, user_likes, user_photos, user_relationships, user_status, user_work_history'
-  , redirect_uri:   process.env.produrlfacebook
-};
-
+//facebook api keys
 var FACEBOOK_APP_ID = process.env.facebook_client_id;
 var FACEBOOK_APP_SECRET = process.env.facebook_client_secret;
+var CALLBACK_URL_FACEBOOK = process.env.produrlfacebook;
 var FB_ACCESS_TOKEN = "";
+
+
+var conf = {
+    client_id:      FACEBOOK_APP_ID
+  , client_secret:  FACEBOOK_APP_SECRET
+  , scope:          'email, user_about_me, user_birthday, user_location, publish_stream, read_stream, user_likes, user_photos, user_relationships, user_status, user_work_history'
+  , redirect_uri:   CALLBACK_URL_FACEBOOK
+};
+
+
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -57,7 +63,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: process.env.produrlfacebook
+    callbackURL: CALLBACK_URL_FACEBOOK
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
@@ -80,7 +86,7 @@ passport.use(new FacebookStrategy({
 passport.use(new TwitterStrategy({
     consumerKey: CONSUMER_KEY,
     consumerSecret: CONSUMER_SECRET,
-    callbackURL: process.env.devurltwitter
+    callbackURL: CALLBACK_URL_TWITTER
   },
   function(token, tokenSecret, profile, done) {
     // // asynchronous verification, for effect...
@@ -159,7 +165,7 @@ app.get('/auth/facebook/callback',
 
   });
 
-//add for facebook canvas?
+//Facebook Canvas
 app.post('/', function( req, res ){
     res.redirect(307, '/auth/facebook/canvas');
 });
@@ -191,8 +197,6 @@ app.get('/auth/facebook/canvas/autologin', function( req, res ){
               '</body>' +
             '</html>' );
 });
-
-
 
 // GET /auth/twitter
 //   Use passport.authenticate() as route middleware to authenticate the
