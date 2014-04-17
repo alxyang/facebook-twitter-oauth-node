@@ -160,8 +160,6 @@ app.get('/auth/twitter/callback',
 
 exports.graph = graph;
 
-
-
 //set environment ports and start application
 app.set('port', process.env.PORT || 3000);
 http.createServer(app).listen(app.get('port'), function(){
