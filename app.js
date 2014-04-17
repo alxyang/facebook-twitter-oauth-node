@@ -92,6 +92,7 @@ app.use(passport.session());
 app.use(app.router);
 //routes
 app.get('/', index.view);
+app.post('/', index.view);
 app.get('/fbpage', index.fbpage);
 app.get('/twitpage', index.twitpage);
 
