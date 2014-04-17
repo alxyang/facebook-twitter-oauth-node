@@ -7,6 +7,7 @@ var graph = require('fbgraph');
 var passport = require('passport');
 var util = require('util');
 var TwitterStrategy = require('passport-twitter').Strategy;
+var FacebookStrategy = require('passport-facebook-canvas');
 var Twit = require('twit');
 //load environment variables
 var dotenv = require('dotenv');
@@ -30,6 +31,10 @@ var conf = {
   , redirect_uri:   process.env.devurlfacebook
 };
 
+var FACEBOOK_APP_ID = process.env.facebook_client_id;
+var FACEBOOK_APP_SECRET = process.env.facebook_client_secret;
+var FB_ACCESS_TOKEN = "";
+
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
 //   serialize users into and deserialize users out of the session.  Typically,
@@ -44,6 +49,29 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
+
+// Use the FacebookStrategy within Passport.
+//   Strategies in Passport require a `verify` function, which accept
+//   credentials (in this case, an accessToken, refreshToken, and Facebook
+//   profile), and invoke a callback with a user object.
+passport.use(new FacebookStrategy({
+    clientID: FACEBOOK_APP_ID,
+    clientSecret: FACEBOOK_APP_SECRET,
+    callbackURL: process.env.devurlfacebook
+  },
+  function(accessToken, refreshToken, profile, done) {
+    // asynchronous verification, for effect...
+    process.nextTick(function () {
+      console.log(accessToken);
+      FB_ACCESS_TOKEN = accessToken;
+      // To keep the example simple, the user's Facebook profile is returned to
+      // represent the logged-in user.  In a typical application, you would want
+      // to associate the Facebook account with a user record in your database,
+      // and return that user instead.
+      return done(null, profile);
+    });
+  }
+));
 
 // Use the TwitterStrategy within Passport.
 //   Strategies in passport require a `verify` function, which accept
@@ -98,37 +126,42 @@ app.post('/', index.view);
 app.get('/fbpage', index.fbpage);
 app.get('/twitpage', index.twitpage);
 
-//facebook authorization path
-app.get('/auth/facebook', function(req, res) {
+// GET /auth/facebook
+//   Use passport.authenticate() as route middleware to authenticate the
+//   request.  The first step in Facebook authentication will involve
+//   redirecting the user to facebook.com.  After authorization, Facebook will
+//   redirect the user back to this application at /auth/facebook/callback
+app.get('/auth/facebook',
+  passport.authenticate('facebook-canvas'),
+  function(req, res){
+    // The request will be redirected to Facebook for authentication, so this
+    // function will not be called.
+  });
 
-  // we don't have a code yet
-  // so we'll redirect to the oauth dialog
-  if (!req.query.code) {
-    var authUrl = graph.getOauthUrl({
-        "client_id":     conf.client_id
-      , "redirect_uri":  conf.redirect_uri
+// GET /auth/facebook/callback
+//   Use passport.authenticate() as route middleware to authenticate the
+//   request.  If authentication fails, the user will be redirected back to the
+//   login page.  Otherwise, the primary route function function will be called,
+//   which, in this example, will redirect the user to the home page.
+app.get('/auth/facebook/callback', 
+  passport.authenticate('facebook-canvas', { failureRedirect: '/' }),
+  function(req, res) {
+
+    graph.setAccessToken(FB_ACCESS_TOKEN);
+        // code is set
+    // we'll send that and get the access token
+    graph.authorize({
+        "client_id":      conf.client_id
+      , "redirect_uri":   conf.redirect_uri
+      , "client_secret":  conf.client_secret
+      , "code":           req.query.code
+    }, function (err, facebookRes) {
+        exports.graph = graph;
+        res.redirect('/fbpage');
     });
 
-    if (!req.query.error) { //checks whether a user denied the app facebook login/permissions
-      res.redirect(authUrl);
-      console.log("logged in");
-    } else {  //req.query.error == 'access_denied'
-      res.send('access denied');
-    }
-    return;
-  }
-
-  // code is set
-  // we'll send that and get the access token
-  graph.authorize({
-      "client_id":      conf.client_id
-    , "redirect_uri":   conf.redirect_uri
-    , "client_secret":  conf.client_secret
-    , "code":           req.query.code
-  }, function (err, facebookRes) {
-    res.redirect('/fbpage');
   });
-});
+
 
 // GET /auth/twitter
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -161,7 +194,6 @@ app.get('/auth/twitter/callback',
   });
 
 
-exports.graph = graph;
 
 //set environment ports and start application
 app.set('port', process.env.PORT || 3000);

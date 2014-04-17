@@ -12,6 +12,7 @@
     "mongoose": "*",
     "passport": "*",
     "passport-facebook": "*",
+    "passport-facebook-canvas": "0.0.3",
     "passport-twitter": "*",
     "dotenv": "*",
     "fbgraph": "*",
@@ -19,5 +20,5 @@
   },
   "engines": {
     "node": "0.10.x"
-  }  
+  }
 }
