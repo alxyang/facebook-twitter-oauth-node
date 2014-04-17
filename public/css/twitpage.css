@@ -1,0 +1,30 @@
+body {
+	background: #2EB8E6;
+	color: #ccc;
+}
+
+.container {
+	width: 100%;
+}
+
+#heading {
+	margin-left: 30%;
+	margin-right: 30%;
+}
+
+.tweetframe {
+	background: #fff;
+	color: #000;
+	text-align: left;
+
+	margin-left: 30%;
+	margin-right: 30%;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+
+	border-radius: 2px;
+}
