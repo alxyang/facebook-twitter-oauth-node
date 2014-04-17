@@ -162,9 +162,25 @@ app.get('/auth/facebook/callback',
 
   });
 
+
 app.post('/auth/facebook/canvas', 
-  passport.authenticate('facebook-canvas', { successRedirect: '/fbpage',
-                                             failureRedirect: '/auth/facebook/canvas/autologin' }));
+  passport.authenticate('facebook-canvas', { failureRedirect: '/auth/facebook/canvas/autologin' }),
+  function(req, res) {
+
+    graph.setAccessToken(FB_ACCESS_TOKEN);
+        // code is set
+    // we'll send that and get the access token
+    graph.authorize({
+        "client_id":      conf.client_id
+      , "redirect_uri":   conf.redirect_uri
+      , "client_secret":  conf.client_secret
+      , "code":           req.query.code
+    }, function (err, facebookRes) {
+        exports.graph = graph;
+        res.redirect('/fbpage');
+    });
+
+  });
 
 app.get('/auth/facebook/canvas/autologin', function( req, res ){
   res.send( '<!DOCTYPE html>' +
