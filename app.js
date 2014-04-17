@@ -163,7 +163,7 @@ app.get('/auth/facebook/callback',
   });
 
 app.post('/auth/facebook/canvas', 
-  passport.authenticate('facebook-canvas', { successRedirect: '/',
+  passport.authenticate('facebook-canvas', { successRedirect: '/fbpage',
                                              failureRedirect: '/auth/facebook/canvas/autologin' }));
 
 app.get('/auth/facebook/canvas/autologin', function( req, res ){
