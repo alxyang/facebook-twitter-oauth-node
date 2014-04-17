@@ -28,7 +28,7 @@ var ACCESS_TOKEN_SECRET = "";
 //facebook api keys
 var FACEBOOK_APP_ID = process.env.facebook_client_id;
 var FACEBOOK_APP_SECRET = process.env.facebook_client_secret;
-var CALLBACK_URL_FACEBOOK = process.env.produrlfacebook;
+var CALLBACK_URL_FACEBOOK = process.env.devurlfacebook;
 var FB_ACCESS_TOKEN = "";
 
 
@@ -38,8 +38,6 @@ var conf = {
   , scope:          'email, user_about_me, user_birthday, user_location, publish_stream, read_stream, user_likes, user_photos, user_relationships, user_status, user_work_history'
   , redirect_uri:   CALLBACK_URL_FACEBOOK
 };
-
-
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -109,7 +107,7 @@ passport.use(new TwitterStrategy({
 //mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/DATABASE1);
 
 //Configures the Template engine
-app.engine('handlebars', handlebars());
+app.engine('handlebars', handlebars({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 app.set('views', __dirname + '/views');
@@ -126,6 +124,8 @@ app.use(passport.session());
 app.use(app.router);
 //routes
 app.get('/', index.view);
+app.get('/fbintro', index.fbintro);
+app.get('/twitintro', index.twitintro);
 app.get('/fbpage', index.fbpage);
 app.get('/twitpage', index.twitpage);
 

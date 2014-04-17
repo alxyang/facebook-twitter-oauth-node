@@ -5,6 +5,15 @@ exports.view = function(req, res) {
 	res.render('index');
  }
 
+exports.fbintro = function(req, res) {
+    res.render('fbintro');
+ }
+
+ exports.twitintro = function(req, res) {
+    res.render('twitintro');
+ }
+
+
 exports.fbpage = function(req, res) {
     //test api call facebook
     app.graph.get("/me?fields=feed", function(err, reply) {

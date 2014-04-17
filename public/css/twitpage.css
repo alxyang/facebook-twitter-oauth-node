@@ -1,11 +1,11 @@
-body {
+
+
+.container-twitter {
 	background: #2EB8E6;
-	color: #ccc;
+	padding-top:50px;
+	padding-bottom:50px;
 }
 
-.container {
-	width: 100%;
-}
 
 #heading {
 	margin-left: 30%;
