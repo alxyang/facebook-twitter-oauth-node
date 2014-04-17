@@ -162,6 +162,21 @@ app.get('/auth/facebook/callback',
 
   });
 
+app.post('/auth/facebook/canvas', 
+  passport.authenticate('facebook-canvas', { successRedirect: '/',
+                                             failureRedirect: '/auth/facebook/canvas/autologin' }));
+
+app.get('/auth/facebook/canvas/autologin', function( req, res ){
+  res.send( '<!DOCTYPE html>' +
+              '<body>' +
+                '<script type="text/javascript">' +
+                  'top.location.href = "/auth/facebook";' +
+                '</script>' +
+              '</body>' +
+            '</html>' );
+});
+
+
 
 // GET /auth/twitter
 //   Use passport.authenticate() as route middleware to authenticate the
