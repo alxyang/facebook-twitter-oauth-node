@@ -120,9 +120,6 @@ app.use(passport.session());
 app.use(app.router);
 //routes
 app.get('/', index.view);
-
-//add for facebook canvas?
-app.post('/', index.view);
 app.get('/fbpage', index.fbpage);
 app.get('/twitpage', index.twitpage);
 
@@ -162,7 +159,8 @@ app.get('/auth/facebook/callback',
 
   });
 
-
+//add for facebook canvas?
+app.post('/', index.fbpage);
 app.post('/auth/facebook/canvas', 
   passport.authenticate('facebook-canvas', { failureRedirect: '/auth/facebook/canvas/autologin' }),
   function(req, res) {
