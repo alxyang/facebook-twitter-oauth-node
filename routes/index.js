@@ -32,6 +32,8 @@ exports.fbpage = function(req, res) {
       var data = {stories : tempArray};
       res.render('fbpage', data);
     });
+
+
 }
 
 exports.twitpage = function(req, res) {

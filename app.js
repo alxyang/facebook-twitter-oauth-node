@@ -66,7 +66,7 @@ passport.use(new FacebookStrategy({
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
-      console.log(accessToken);
+      console.log("derp herp derp " + accessToken);
       FB_ACCESS_TOKEN = accessToken;
       // To keep the example simple, the user's Facebook profile is returned to
       // represent the logged-in user.  In a typical application, you would want
@@ -135,7 +135,7 @@ app.get('/twitpage', index.twitpage);
 //   redirecting the user to facebook.com.  After authorization, Facebook will
 //   redirect the user back to this application at /auth/facebook/callback
 app.get('/auth/facebook',
-  passport.authenticate('facebook-canvas'),
+  passport.authenticate('facebook-canvas', { scope: ['email, user_about_me, user_birthday, user_location, publish_stream, read_stream, user_likes, user_photos, user_relationships, user_status, user_work_history'] }),
   function(req, res){
     // The request will be redirected to Facebook for authentication, so this
     // function will not be called.
@@ -149,8 +149,7 @@ app.get('/auth/facebook',
 app.get('/auth/facebook/callback', 
   passport.authenticate('facebook-canvas', { failureRedirect: '/' }),
   function(req, res) {
-
-    graph.setAccessToken(FB_ACCESS_TOKEN);
+        graph.setAccessToken(FB_ACCESS_TOKEN);
         // code is set
     // we'll send that and get the access token
     graph.authorize({
@@ -159,6 +158,7 @@ app.get('/auth/facebook/callback',
       , "client_secret":  conf.client_secret
       , "code":           req.query.code
     }, function (err, facebookRes) {
+
         exports.graph = graph;
         res.redirect('/fbpage');
     });
@@ -170,7 +170,8 @@ app.post('/', function( req, res ){
     res.redirect(307, '/auth/facebook/canvas');
 });
 app.post('/auth/facebook/canvas', 
-  passport.authenticate('facebook-canvas', { failureRedirect: '/auth/facebook/canvas/autologin' }),
+  passport.authenticate('facebook-canvas', { scope: ['email, user_about_me, user_birthday, user_location, publish_stream, read_stream, user_likes, user_photos, user_relationships, user_status, user_work_history'] }, 
+    { failureRedirect: '/auth/facebook/canvas/autologin' }),
   function(req, res) {
 
     graph.setAccessToken(FB_ACCESS_TOKEN);
@@ -182,6 +183,7 @@ app.post('/auth/facebook/canvas',
       , "client_secret":  conf.client_secret
       , "code":           req.query.code
     }, function (err, facebookRes) {
+        graph.setAccessToken(FB_ACCESS_TOKEN);
         exports.graph = graph;
         res.redirect('/fbpage');
     });
