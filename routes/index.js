@@ -50,7 +50,7 @@ exports.fbpagecanvas = function(req, res) {
       });
 
       var data = {stories : tempArray};
-      res.render('fbpage', data, {layout: false});
+      res.render('fbpagecanvas', data, {layout: false});
     });
 }
 
