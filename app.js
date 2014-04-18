@@ -127,6 +127,7 @@ app.get('/', index.view);
 app.get('/fbintro', index.fbintro);
 app.get('/twitintro', index.twitintro);
 app.get('/fbpage', index.fbpage);
+app.get('/fbpagecanvas', index.fbpagecanvas);
 app.get('/twitpage', index.twitpage);
 
 // GET /auth/facebook
@@ -167,7 +168,7 @@ app.post('/auth/facebook/canvas',
 
         graph.setAccessToken(FB_ACCESS_TOKEN);
         exports.graph = graph;
-        res.redirect('/fbpage');
+        res.redirect('/fbpagecanvas');
 
   });
 
