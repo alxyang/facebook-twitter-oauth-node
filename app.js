@@ -31,14 +31,6 @@ var FACEBOOK_APP_SECRET = process.env.facebook_client_secret;
 var CALLBACK_URL_FACEBOOK = process.env.produrlfacebook;
 var FB_ACCESS_TOKEN = "";
 
-
-var conf = {
-    client_id:      FACEBOOK_APP_ID
-  , client_secret:  FACEBOOK_APP_SECRET
-  , scope:          'email, user_about_me, user_birthday, user_location, publish_stream, read_stream, user_likes, user_photos, user_relationships, user_status, user_work_history'
-  , redirect_uri:   CALLBACK_URL_FACEBOOK
-};
-
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
 //   serialize users into and deserialize users out of the session.  Typically,
@@ -136,7 +128,7 @@ app.get('/twitpage', index.twitpage);
 //   redirecting the user to facebook.com.  After authorization, Facebook will
 //   redirect the user back to this application at /auth/facebook/callback
 app.get('/auth/facebook',
-  passport.authenticate('facebook-canvas', { scope: ['email, user_about_me, user_birthday, user_location, publish_stream, read_stream, user_likes, user_photos, user_relationships, user_status, user_work_history'] }),
+  passport.authenticate('facebook-canvas', { scope: ['email, user_about_me, user_birthday, user_location,read_stream, user_likes, user_photos, user_relationships, user_status, user_work_history'] }),
   function(req, res){
     // The request will be redirected to Facebook for authentication, so this
     // function will not be called.
