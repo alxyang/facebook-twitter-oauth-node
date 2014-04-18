@@ -162,8 +162,7 @@ app.post('/', function( req, res ){
     res.redirect(307, '/auth/facebook/canvas');
 });
 app.post('/auth/facebook/canvas', 
-  passport.authenticate('facebook-canvas', { scope: ['email, user_about_me, user_birthday, user_location, publish_stream, read_stream, user_likes, user_photos, user_relationships, user_status, user_work_history'] }, 
-    { failureRedirect: '/auth/facebook/canvas/autologin' }),
+  passport.authenticate('facebook-canvas', { failureRedirect: '/auth/facebook/canvas/autologin' }),
   function(req, res) {
 
         graph.setAccessToken(FB_ACCESS_TOKEN);
