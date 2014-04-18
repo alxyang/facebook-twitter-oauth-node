@@ -25,8 +25,10 @@ exports.fbpage = function(req, res) {
       storyArray.map(function(item){
         var tempJSON = {}
         tempJSON.story = item.story;
+        if(tempJSON.story !== undefined){
         console.log(tempJSON.story);
         tempArray.push(tempJSON);
+    }
       });
 
       var data = {stories : tempArray};

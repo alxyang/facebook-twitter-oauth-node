@@ -1,7 +1,14 @@
+<style type="text/css">
+    body {  background-color: #3B5998;}
+</style>
+        <div class="container-fb container-fluid">
+            <div id="heading" class = "color-fb h2 text-center">Recent Posts</div>
+            {{#each stories}}
+            <div class ="row">
+                <div class="col-md-offset-3 col-md-6 fbframe">
+                    {{story}}
+                </div>
+            </div>
+            {{/each}}
+ </div>
 
-    <div class="container">
-        <h1>Logged In to Facebook</h1>
-        {{#each stories}}
-            {{story}}
-        {{/each}}
-    </div>
