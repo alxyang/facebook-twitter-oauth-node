@@ -59,9 +59,9 @@ exports.fbpage = function(req, res) {
 
 exports.twitpage = function(req, res) {
 
-	var finalData = null,
-		screen_name = null,
-		posts = null;
+	var finalData,
+		screen_name,
+		posts;
 
 	//  get username of current user
     app.T.get('account/verify_credentials', function(err, reply) {
@@ -105,7 +105,7 @@ exports.twitpage = function(req, res) {
 
     // check to make sure that async calls are made before final render
     function complete() {
-    	if(screen_name !== null && posts !== null) {
+    	if(screen_name !== undefined && posts !== undefined) {
     		finalData = {'posts': posts, 'screen_name': screen_name};
     		res.render('twitpage', finalData);
     	}
