@@ -46,6 +46,11 @@ passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
 
+// Simple route middleware to ensure user is authenticated.
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/');
+}
 // Use the FacebookStrategy within Passport.
 //   Strategies in Passport require a `verify` function, which accept
 //   credentials (in this case, an accessToken, refreshToken, and Facebook
@@ -118,9 +123,9 @@ app.use(app.router);
 app.get('/', index.view);
 app.get('/fbintro', index.fbintro);
 app.get('/twitintro', index.twitintro);
-app.get('/fbpage', index.fbpage);
+app.get('/fbpage', ensureAuthenticated, index.fbpage);
 // app.get('/fbpagecanvas', index.fbpagecanvas);
-app.get('/twitpage', index.twitpage);
+app.get('/twitpage', ensureAuthenticated, index.twitpage);
 
 // GET /auth/facebook
 //   Use passport.authenticate() as route middleware to authenticate the

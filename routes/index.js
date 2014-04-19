@@ -70,7 +70,7 @@ exports.twitpage = function(req, res) {
     });
 
     //  get user twitter feed test
-    app.T.get('statuses/user_timeline', { count: 20 }, function(err, reply) {
+    app.T.get('statuses/user_timeline', { count: 100 }, function(err, reply) {
 
         var textArr = [];
         reply.map(function(item){
